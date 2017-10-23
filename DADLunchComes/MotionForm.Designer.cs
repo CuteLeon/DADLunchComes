@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.LogLabel = new System.Windows.Forms.Label();
+            this.MotionPictureBox = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.MotionPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // LogLabel
@@ -39,8 +41,22 @@
             this.LogLabel.ForeColor = System.Drawing.Color.White;
             this.LogLabel.Location = new System.Drawing.Point(242, 0);
             this.LogLabel.Name = "LogLabel";
+            this.LogLabel.Padding = new System.Windows.Forms.Padding(5);
             this.LogLabel.Size = new System.Drawing.Size(400, 411);
             this.LogLabel.TabIndex = 0;
+            // 
+            // MotionPictureBox
+            // 
+            this.MotionPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.MotionPictureBox.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.MotionPictureBox.Location = new System.Drawing.Point(0, 275);
+            this.MotionPictureBox.Margin = new System.Windows.Forms.Padding(0);
+            this.MotionPictureBox.MaximumSize = new System.Drawing.Size(240, 135);
+            this.MotionPictureBox.MinimumSize = new System.Drawing.Size(240, 135);
+            this.MotionPictureBox.Name = "MotionPictureBox";
+            this.MotionPictureBox.Size = new System.Drawing.Size(240, 135);
+            this.MotionPictureBox.TabIndex = 1;
+            this.MotionPictureBox.TabStop = false;
             // 
             // MotionForm
             // 
@@ -49,6 +65,7 @@
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ClientSize = new System.Drawing.Size(642, 411);
+            this.Controls.Add(this.MotionPictureBox);
             this.Controls.Add(this.LogLabel);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -58,6 +75,7 @@
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MotionForm_FormClosing);
             this.Shown += new System.EventHandler(this.MotionForm_Shown);
+            ((System.ComponentModel.ISupportInitialize)(this.MotionPictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -65,6 +83,7 @@
         #endregion
 
         private System.Windows.Forms.Label LogLabel;
+        private System.Windows.Forms.PictureBox MotionPictureBox;
     }
 }
 

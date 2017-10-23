@@ -31,13 +31,16 @@ namespace DADLunchComes
         //运动监视
         MotionDetector LunchDetector;
 
+        IMotionDetector motionDetector = new TwoFramesDifferenceDetector();//new SimpleBackgroundModelingDetector()
+        IMotionProcessing motionProcessing = new MotionAreaHighlighting();//new MotionAreaHighlighting()
+
         public MotionForm()
         {
             InitializeComponent();
         }
 
         private void MotionForm_Shown(object sender, EventArgs e)
-        {
+        {   
             AppendLog("程序已加载...");
             try
             {
@@ -48,8 +51,6 @@ namespace DADLunchComes
                 //使用默认设备
                 VideoSource = new VideoCaptureDevice(VideoDevicesList[0].MonikerString);
                 //绑定事件
-                AppendLog("注册摄像头刷新事件...");
-                VideoSource.NewFrame += new NewFrameEventHandler((v,f)=> this.BackgroundImage = f.Frame.Clone() as Image );
                 AppendLog("注册警报事件");
                 VideoSource.NewFrame += new NewFrameEventHandler(Alert);
                 AppendLog("正在启动摄像头...");
@@ -65,10 +66,7 @@ namespace DADLunchComes
             AppendLog("设备初始化完成！开始监视...");
 
             //运动监视
-            LunchDetector = new MotionDetector(
-                new SimpleBackgroundModelingDetector(),
-                new MotionAreaHighlighting()
-            );
+            LunchDetector = new MotionDetector(motionDetector,motionProcessing);
             AppendLog("运行监视创建完成...");
             AppendLog("————————————");
         }
@@ -105,12 +103,12 @@ namespace DADLunchComes
 
         private void Alert(object sender,NewFrameEventArgs e)
         {
+            this.BackgroundImage = e.Frame.Clone() as Image;
             if (LunchDetector.ProcessFrame(e.Frame.Clone() as Bitmap) > 0.01)
             {
                 if (IgnoreAlert) return;
                 IgnoreAlert = true;
                 AppendLog("发现移动对象");
-                
                 //TODO:触发监视警报
 
                 //解除警报事件，防止瞬间重复触发
@@ -119,6 +117,7 @@ namespace DADLunchComes
                     IgnoreAlert = false;
                 })).Start();
             }
+            MotionPictureBox.BackgroundImage = (motionDetector as TwoFramesDifferenceDetector).MotionFrame.ToManagedImage();
             GC.Collect();
         }
 
