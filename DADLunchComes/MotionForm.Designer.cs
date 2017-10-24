@@ -35,7 +35,7 @@
             // 
             // LogLabel
             // 
-            this.LogLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.LogLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.LogLabel.Dock = System.Windows.Forms.DockStyle.Right;
             this.LogLabel.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.LogLabel.ForeColor = System.Drawing.Color.White;
@@ -49,12 +49,12 @@
             // 
             this.MotionPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.MotionPictureBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.MotionPictureBox.Location = new System.Drawing.Point(0, 275);
+            this.MotionPictureBox.Location = new System.Drawing.Point(0, 186);
             this.MotionPictureBox.Margin = new System.Windows.Forms.Padding(0);
-            this.MotionPictureBox.MaximumSize = new System.Drawing.Size(240, 135);
-            this.MotionPictureBox.MinimumSize = new System.Drawing.Size(240, 135);
+            this.MotionPictureBox.MaximumSize = new System.Drawing.Size(400, 225);
+            this.MotionPictureBox.MinimumSize = new System.Drawing.Size(400, 225);
             this.MotionPictureBox.Name = "MotionPictureBox";
-            this.MotionPictureBox.Size = new System.Drawing.Size(240, 135);
+            this.MotionPictureBox.Size = new System.Drawing.Size(400, 225);
             this.MotionPictureBox.TabIndex = 1;
             this.MotionPictureBox.TabStop = false;
             // 

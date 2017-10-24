@@ -104,13 +104,16 @@ namespace DADLunchComes
         private void Alert(object sender,NewFrameEventArgs e)
         {
             this.BackgroundImage = e.Frame.Clone() as Image;
-            if (LunchDetector.ProcessFrame(e.Frame.Clone() as Bitmap) > 0.01)
+            float Result = LunchDetector.ProcessFrame(e.Frame.Clone() as Bitmap);
+            if ( Result > 0.0001)
             {
                 if (IgnoreAlert) return;
                 IgnoreAlert = true;
-                AppendLog("发现移动对象");
-                //TODO:触发监视警报
+                AppendLog("发现移动对象 " + Result.ToString());
 
+                //TODO:触发监视警报
+                Debug.Print(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + " : " + Result.ToString());
+                
                 //解除警报事件，防止瞬间重复触发
                 new Thread(new ThreadStart(delegate {
                     Thread.Sleep(1000);
@@ -118,7 +121,7 @@ namespace DADLunchComes
                 })).Start();
             }
             MotionPictureBox.BackgroundImage = (motionDetector as TwoFramesDifferenceDetector).MotionFrame.ToManagedImage();
-            GC.Collect();
+            //GC.Collect();
         }
 
     }
