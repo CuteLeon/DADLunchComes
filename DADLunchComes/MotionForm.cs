@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Speech.Synthesis;
 
 using AForge.Video;
 using AForge.Video.DirectShow;
@@ -113,15 +114,24 @@ namespace DADLunchComes
 
                 //TODO:触发监视警报
                 Debug.Print(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + " : " + Result.ToString());
-                
+                Speak();
+
                 //解除警报事件，防止瞬间重复触发
                 new Thread(new ThreadStart(delegate {
-                    Thread.Sleep(1000);
+                    Thread.Sleep(3000);
                     IgnoreAlert = false;
                 })).Start();
             }
             MotionPictureBox.BackgroundImage = (motionDetector as TwoFramesDifferenceDetector).MotionFrame.ToManagedImage();
             //GC.Collect();
+        }
+
+        private void Speak()
+        {
+            //using (SpeechSynthesizer Speaker = new SpeechSynthesizer())
+            SpeechSynthesizer Speaker = new SpeechSynthesizer();
+            Speaker.SpeakCompleted += new EventHandler<SpeakCompletedEventArgs>((s,e)=> { (s as SpeechSynthesizer).Dispose(); });
+            Speaker.SpeakAsync("爸爸，吃饭！");
         }
 
     }
