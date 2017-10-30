@@ -14,6 +14,8 @@ using AForge.Video.DirectShow;
 using AForge.Vision.Motion;
 using System.Diagnostics;
 using System.Threading;
+using System.Net.Sockets;
+using System.IO;
 
 namespace DADLunchComes
 {
@@ -114,7 +116,7 @@ namespace DADLunchComes
 
                 //TODO:触发监视警报
                 Debug.Print(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + " : " + Result.ToString());
-                Speak();
+                SendAlert(Result, new Bitmap(e.Frame,640,360));
 
                 //解除警报事件，防止瞬间重复触发
                 new Thread(new ThreadStart(delegate {
@@ -126,12 +128,31 @@ namespace DADLunchComes
             //GC.Collect();
         }
 
-        private void Speak()
+        private void SendAlert(float value,Bitmap Frame)
         {
-            //using (SpeechSynthesizer Speaker = new SpeechSynthesizer())
-            SpeechSynthesizer Speaker = new SpeechSynthesizer();
-            Speaker.SpeakCompleted += new EventHandler<SpeakCompletedEventArgs>((s,e)=> { (s as SpeechSynthesizer).Dispose(); });
-            Speaker.SpeakAsync("爸爸，吃饭！");
+            try
+            {
+                Socket AlertSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                AlertSocket.Connect("", 17417);
+                AlertSocket.Send(Encoding.UTF8.GetBytes(string.Format(
+                    "DAD_LUNCH={0}_FRAME={1}\n",
+                    value,
+                    BitmapToString(Frame)
+                    )));
+                AlertSocket?.Close();
+                AppendLog("警报发送成功！");
+            }
+            catch (Exception ex)
+            {
+                AppendLog("发送警报出错：{0}",ex.Message);
+            }
+        }
+
+        private string BitmapToString(Bitmap Frame)
+        {
+            MemoryStream memoryStream = new MemoryStream();
+            Frame.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
+            return Convert.ToBase64String(memoryStream.GetBuffer());
         }
 
     }
